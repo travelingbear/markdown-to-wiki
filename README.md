@@ -56,7 +56,7 @@ A VS Code extension that converts Markdown files to XWiki format with live previ
 
 ## Installation
 
-1. Download the latest `.vsix` file from releases
+1. Download the latest `.vsix` file from releases (you can also download manually in https://marketplace.visualstudio.com/items?itemName=franciscofernandes.md-xwiki-converter)
 2. Open VS Code
 3. Press `Ctrl+Shift+P` (or `Cmd+Shift+P` on Mac)
 4. Type "Extensions: Install from VSIX"
