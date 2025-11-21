@@ -3,7 +3,7 @@
   "displayName": "Markdown to XWiki Converter",
   "description": "Convert Markdown files to XWiki format and vice versa",
   "version": "1.4.0",
-  "publisher": "franicscofernandes",
+  "publisher": "franciscofernandes",
   "author": {
     "name": "Francisco Fernandes"
   },
