@@ -1,0 +1,121 @@
+{
+  "name": "md-xwiki-converter",
+  "displayName": "Markdown to XWiki Converter",
+  "description": "Convert Markdown files to XWiki format and vice versa",
+  "version": "1.4.0",
+  "publisher": "franicscofernandes",
+  "author": {
+    "name": "Francisco Fernandes"
+  },
+  "icon": "md-xwiki-icon.png",
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": ["Other"],
+  "keywords": ["markdown", "xwiki", "converter", "wiki", "documentation", "format"],
+  "homepage": "https://github.com/travelingbear/markdown-to-wiki#readme",
+  "bugs": {
+    "url": "https://github.com/travelingbear/markdown-to-wiki/issues"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/travelingbear/markdown-to-wiki.git"
+  },
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "configuration": {
+      "title": "Markdown to XWiki",
+      "properties": {
+        "markdownToXwiki.xwikiOutputFolder": {
+          "type": "string",
+          "default": "",
+          "description": "Folder path where converted .xwiki files will be saved. Leave empty to save in the same folder as the source file."
+        },
+        "markdownToXwiki.markdownOutputFolder": {
+          "type": "string",
+          "default": "",
+          "description": "Folder path where converted .md files will be saved. Leave empty to save in the same folder as the source file."
+        }
+      }
+    },
+    "languages": [
+      {
+        "id": "xwiki",
+        "aliases": ["XWiki", "xwiki"],
+        "extensions": [".xwiki"],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "xwiki",
+        "scopeName": "text.xwiki",
+        "path": "./syntaxes/xwiki.tmLanguage.json"
+      }
+    ],
+    "commands": [
+      {
+        "command": "markdown-to-xwiki.convert",
+        "title": "Convert to XWiki",
+        "when": "resourceExtname == .md"
+      },
+      {
+        "command": "xwiki-to-markdown.convert",
+        "title": "Convert to Markdown",
+        "when": "resourceExtname == .xwiki"
+      },
+      {
+        "command": "xwiki.showPreview",
+        "title": "Open XWiki Preview",
+        "icon": "$(open-preview)"
+      }
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "command": "markdown-to-xwiki.convert",
+          "when": "resourceExtname == .md",
+          "group": "navigation"
+        },
+        {
+          "command": "xwiki-to-markdown.convert",
+          "when": "resourceExtname == .xwiki",
+          "group": "navigation"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "markdown-to-xwiki.convert",
+          "when": "resourceExtname == .md",
+          "group": "navigation"
+        },
+        {
+          "command": "xwiki-to-markdown.convert",
+          "when": "resourceExtname == .xwiki",
+          "group": "navigation"
+        }
+      ],
+      "editor/title": [
+        {
+          "command": "xwiki.showPreview",
+          "when": "resourceExtname == .xwiki",
+          "group": "navigation"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "package": "vsce package",
+    "publish": "vsce publish"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.74.0",
+    "@types/node": "16.x",
+    "typescript": "^4.9.4"
+  }
+}

@@ -1,0 +1,168 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "XWiki",
+  "patterns": [
+    {
+      "include": "#headers"
+    },
+    {
+      "include": "#code-blocks"
+    },
+    {
+      "include": "#macros"
+    },
+    {
+      "include": "#formatting"
+    },
+    {
+      "include": "#links"
+    },
+    {
+      "include": "#images"
+    },
+    {
+      "include": "#lists"
+    },
+    {
+      "include": "#tables"
+    },
+    {
+      "include": "#blockquotes"
+    }
+  ],
+  "repository": {
+    "headers": {
+      "patterns": [
+        {
+          "name": "markup.heading.1.xwiki",
+          "match": "^(=)\\s+(.*?)\\s+(=)$",
+          "captures": {
+            "1": { "name": "punctuation.definition.heading.xwiki" },
+            "2": { "name": "entity.name.section.xwiki" },
+            "3": { "name": "punctuation.definition.heading.xwiki" }
+          }
+        },
+        {
+          "name": "markup.heading.2.xwiki",
+          "match": "^(==)\\s+(.*?)\\s+(==)$",
+          "captures": {
+            "1": { "name": "punctuation.definition.heading.xwiki" },
+            "2": { "name": "entity.name.section.xwiki" },
+            "3": { "name": "punctuation.definition.heading.xwiki" }
+          }
+        },
+        {
+          "name": "markup.heading.3.xwiki",
+          "match": "^(===)\\s+(.*?)\\s+(===)$",
+          "captures": {
+            "1": { "name": "punctuation.definition.heading.xwiki" },
+            "2": { "name": "entity.name.section.xwiki" },
+            "3": { "name": "punctuation.definition.heading.xwiki" }
+          }
+        }
+      ]
+    },
+    "code-blocks": {
+      "patterns": [
+        {
+          "name": "markup.fenced_code.block.xwiki",
+          "begin": "\\{\\{code\\s+language=\"([^\"]+)\"\\}\\}",
+          "end": "\\{\\{/code\\}\\}",
+          "beginCaptures": {
+            "0": { "name": "punctuation.definition.code.begin.xwiki" }
+          },
+          "endCaptures": {
+            "0": { "name": "punctuation.definition.code.end.xwiki" }
+          },
+          "contentName": "markup.raw.code.xwiki"
+        },
+        {
+          "name": "markup.inline.raw.xwiki",
+          "match": "(##)([^#]+)(##)",
+          "captures": {
+            "1": { "name": "punctuation.definition.raw.begin.xwiki" },
+            "2": { "name": "markup.raw.inline.xwiki" },
+            "3": { "name": "punctuation.definition.raw.end.xwiki" }
+          }
+        }
+      ]
+    },
+    "macros": {
+      "patterns": [
+        {
+          "name": "support.function.macro.xwiki",
+          "match": "\\{\\{(info|warning|error|toc)/?\\}\\}"
+        }
+      ]
+    },
+    "formatting": {
+      "patterns": [
+        {
+          "name": "markup.bold.xwiki",
+          "match": "(\\*\\*)([^*]+)(\\*\\*)",
+          "captures": {
+            "1": { "name": "punctuation.definition.bold.xwiki" },
+            "3": { "name": "punctuation.definition.bold.xwiki" }
+          }
+        },
+        {
+          "name": "markup.italic.xwiki",
+          "match": "(//)([^/]+)(//)",
+          "captures": {
+            "1": { "name": "punctuation.definition.italic.xwiki" },
+            "3": { "name": "punctuation.definition.italic.xwiki" }
+          }
+        },
+        {
+          "name": "markup.strikethrough.xwiki",
+          "match": "(--)([^-]+)(--)"
+        },
+        {
+          "name": "markup.underline.xwiki",
+          "match": "(__)([^_]+)(__)"
+        }
+      ]
+    },
+    "links": {
+      "patterns": [
+        {
+          "name": "markup.underline.link.xwiki",
+          "match": "\\[\\[([^>]+)>>([^\\]]+)\\]\\]"
+        }
+      ]
+    },
+    "images": {
+      "patterns": [
+        {
+          "name": "markup.underline.link.image.xwiki",
+          "match": "\\[\\[image:([^\\]]+)\\]\\]"
+        }
+      ]
+    },
+    "lists": {
+      "patterns": [
+        {
+          "name": "markup.list.unnumbered.xwiki",
+          "match": "^(\\s*)(\\*)\\s+(.*)$"
+        }
+      ]
+    },
+    "tables": {
+      "patterns": [
+        {
+          "name": "markup.table.xwiki",
+          "match": "^\\|(.*)\\|$"
+        }
+      ]
+    },
+    "blockquotes": {
+      "patterns": [
+        {
+          "name": "markup.quote.xwiki",
+          "match": "^(>)\\s+(.*)$"
+        }
+      ]
+    }
+  },
+  "scopeName": "text.xwiki"
+}
