@@ -2,6 +2,8 @@
 
 A VS Code extension that converts Markdown files to XWiki format with live preview capabilities.
 
+![example](./example.gif)
+
 ## Features
 
 - **Bidirectional Conversion**: Convert between Markdown and XWiki formats

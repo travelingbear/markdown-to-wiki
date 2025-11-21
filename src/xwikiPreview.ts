@@ -14,7 +14,13 @@ export class XWikiPreviewProvider {
                 XWikiPreviewProvider.viewType,
                 `XWiki Preview: ${document.fileName}`,
                 vscode.ViewColumn.Beside,
-                { enableScripts: true }
+                { 
+                    enableScripts: true,
+                    localResourceRoots: [
+                        this.extensionUri,
+                        ...(vscode.workspace.workspaceFolders?.map(folder => folder.uri) || [])
+                    ]
+                }
             );
 
             this.panel.onDidDispose(() => {
@@ -66,11 +72,11 @@ export class XWikiPreviewProvider {
     private updatePreview(document: vscode.TextDocument) {
         if (!this.panel) return;
 
-        const html = this.convertXWikiToHtml(document.getText());
+        const html = this.convertXWikiToHtml(document.getText(), document.uri);
         this.panel.webview.html = this.getWebviewContent(html);
     }
 
-    private convertXWikiToHtml(xwiki: string): string {
+    private convertXWikiToHtml(xwiki: string, documentUri?: vscode.Uri): string {
         let html = xwiki;
 
         // Horizontal rules (process first to avoid conflicts)
@@ -118,9 +124,15 @@ export class XWikiPreviewProvider {
         // Colored text
         html = html.replace(/\(% style="([^"]+)" %\)(.*?)\(%%\)/g, '<span style="$1">$2</span>');
 
-        // Images
-        html = html.replace(/\[\[image:([^|\]]+)\|\|alt="([^"]*?)"\]\]/g, '<img src="$1" alt="$2" />');
-        html = html.replace(/\[\[image:([^\]]+)\]\]/g, '<img src="$1" alt="Image" />');
+        // Images - handle local paths
+        html = html.replace(/\[\[image:([^|\]]+)\|\|alt="([^"]*?)"\]\]/g, (match, src, alt) => {
+            const resolvedSrc = this.resolveImagePath(src, documentUri);
+            return `<img src="${resolvedSrc}" alt="${alt}" />`;
+        });
+        html = html.replace(/\[\[image:([^\]]+)\]\]/g, (match, src) => {
+            const resolvedSrc = this.resolveImagePath(src, documentUri);
+            return `<img src="${resolvedSrc}" alt="Image" />`;
+        });
 
         // Links
         html = html.replace(/\[\[([^>]+)>>([^\]]+)\]\]/g, '<a href="$2">$1</a>');
@@ -249,12 +261,57 @@ export class XWikiPreviewProvider {
         return html;
     }
 
+    private resolveImagePath(src: string, documentUri?: vscode.Uri): string {
+        // If it's already a web URL, return as-is
+        if (src.startsWith('http://') || src.startsWith('https://')) {
+            return src;
+        }
+
+        // Handle local paths
+        if (documentUri && this.panel) {
+            try {
+                const workspaceFolder = vscode.workspace.getWorkspaceFolder(documentUri);
+                let imagePath: vscode.Uri;
+
+                if (src.startsWith('./')) {
+                    // Relative to document directory
+                    const documentDir = vscode.Uri.joinPath(documentUri, '..');
+                    imagePath = vscode.Uri.joinPath(documentDir, src.substring(2));
+                } else if (src.startsWith('../')) {
+                    // Relative to document directory
+                    const documentDir = vscode.Uri.joinPath(documentUri, '..');
+                    imagePath = vscode.Uri.joinPath(documentDir, src);
+                } else if (src.startsWith('/')) {
+                    // Absolute path from workspace root
+                    if (workspaceFolder) {
+                        imagePath = vscode.Uri.joinPath(workspaceFolder.uri, src.substring(1));
+                    } else {
+                        imagePath = vscode.Uri.file(src);
+                    }
+                } else {
+                    // Relative to document directory (no prefix)
+                    const documentDir = vscode.Uri.joinPath(documentUri, '..');
+                    imagePath = vscode.Uri.joinPath(documentDir, src);
+                }
+
+                const webviewUri = this.panel.webview.asWebviewUri(imagePath);
+                return webviewUri.toString();
+            } catch (error) {
+                return src;
+            }
+        }
+
+        return src;
+    }
+
     private getWebviewContent(html: string): string {
+        const cspSource = this.panel?.webview.cspSource || "'self'";
         return `<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src ${cspSource} https: data:; script-src ${cspSource} 'unsafe-inline'; style-src ${cspSource} 'unsafe-inline';">
     <title>XWiki Preview</title>
     <style>
         body { 
