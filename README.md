@@ -35,24 +35,24 @@ A VS Code extension that converts Markdown files to XWiki format with live previ
 | Headers | `# Header` | `= Header =` |
 | Bold | `**text**` | `**text**` |
 | Italic | `*text*` | `//text//` |
-| Strikethrough | N/A | `--text--` |
-| Underline | N/A | `__text__` |
-| Superscript | N/A | `^^text^^` |
-| Subscript | N/A | `,,text,,` |
+| Strikethrough | `~~text~~` | `--text--` |
+| Underline | `<u>text</u>` | `__text__` |
+| Superscript | `<sup>text</sup>` | `^^text^^` |
+| Subscript | `<sub>text</sub>` | `,,text,,` |
 | Code | `` `code` `` | `##code##` |
 | Code Block | ``` ```lang ``` | `{{code language="lang"}}{{/code}}` |
-| Monospace | N/A | `{{monospace}}text{{/monospace}}` |
+| Monospace | `` `text` `` | `{{monospace}}text{{/monospace}}` |
 | Links | `[text](url)` | `[[text>>url]]` |
 | Images | `![alt](url)` | `[[image:url]]` |
 | Lists | `- item` | `* item` |
 | Tables | `\| cell \|` | `\| cell \|` |
 | Blockquotes | `> text` | `> text` |
-| Info Box | N/A | `{{info}}text{{/info}}` |
-| Warning Box | N/A | `{{warning}}text{{/warning}}` |
-| Error Box | N/A | `{{error}}text{{/error}}` |
+| Info Box | `> **Info:** text` | `{{info}}text{{/info}}` |
+| Warning Box | `> **Warning:** text` | `{{warning}}text{{/warning}}` |
+| Error Box | `> **Error:** text` | `{{error}}text{{/error}}` |
 | Horizontal Rule | `---` | `----` |
-| Line Break | N/A | `\\` |
-| Colored Text | N/A | `(% style="color:red" %)text(%%)` |
+| Line Break | `  ` (two spaces) | `\\` |
+| Colored Text | `<span style="color:red">text</span>` | `(% style="color:red" %)text(%%)` |
 
 ## Installation
 
