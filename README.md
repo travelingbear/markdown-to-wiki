@@ -69,9 +69,10 @@ You can configure where converted files are saved:
 1. Open VS Code Settings (`Ctrl+,` or `Cmd+,`)
 2. Search for "Markdown to XWiki"
 3. Set output folders:
-   - **XWiki Output Folder**: Where .xwiki files are saved
-   - **Markdown Output Folder**: Where .md files are saved
-   - Leave empty to save in the same folder as the source file (default)
+   - **XWiki Output Folder**: Where .xwiki files are saved when converting from Markdown
+   - **Markdown Output Folder**: Where .md files are saved when converting from XWiki
+   - **Default behavior**: Leave empty to save in the same folder as the source file
+   - **Custom folder**: Enter absolute path (e.g., `/home/user/converted` or `C:\converted`) to save all converted files in that location
 
 ## Requirements
 
